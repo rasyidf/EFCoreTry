@@ -19,29 +19,7 @@ namespace EFCoreTry
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region seed data
-            var item = new Item[] {
-
-            };
-            var services = new Service[] {
-
-            };
-            var products = item
-                .Cast<Product>()
-                .Union(services)
-                .ToList();
-            modelBuilder.Entity<Item>().HasData(item);
-            modelBuilder.Entity<Service>().HasData(services);
-            // characters
-            modelBuilder.Entity<Customer>().HasData(new Customer[]
-            {
-            });
-            // actors
-            modelBuilder.Entity<Vet>().HasData(new Vet[]
-            {
-
-
-            });
+            #region seed data 
             #endregion
             base.OnModelCreating(modelBuilder);
         }
