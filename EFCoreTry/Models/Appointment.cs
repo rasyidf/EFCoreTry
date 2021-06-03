@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EFCoreTry
+namespace EFCoreTry.Models
 {
     public class Appointment
     {

@@ -1,8 +1,12 @@
-﻿namespace EFCoreTry
+﻿using EFCoreTry.Models;
+
+using System.Collections.Generic;
+
+namespace EFCoreTry.Models
 {
     public class Customer : Person
     {
-        public string PetName { get; set; } 
+        public List<Animal> Pets { get; set; } 
     }
 }
 
