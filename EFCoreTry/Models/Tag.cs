@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace EFCoreTry
+namespace EFCoreTry.Models
 {
     public class Tag
     {

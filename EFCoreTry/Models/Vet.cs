@@ -1,6 +1,7 @@
-﻿namespace EFCoreTry
+﻿
+namespace EFCoreTry.Models
 {
-    public class Vet : Person
+    public class Vet : Employee
     {
         public string CertID { get; set; }
     }
