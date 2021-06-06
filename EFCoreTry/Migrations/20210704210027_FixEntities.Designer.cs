@@ -3,14 +3,16 @@ using System;
 using EFCoreTry;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreTry.Migrations
 {
     [DbContext(typeof(PetShopDbContext))]
-    partial class PetShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210704210027_FixEntities")]
+    partial class FixEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,8 +35,17 @@ namespace EFCoreTry.Migrations
 
             modelBuilder.Entity("EFCoreTry.Models.Animal", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DateBorn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Gender")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -83,16 +94,40 @@ namespace EFCoreTry.Migrations
                     b.ToTable("Appoinment");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Customer", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Breed", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("AnimalId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Breeds");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Birthday")
+                    b.Property<string>("Color")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Birthplace")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -141,16 +176,36 @@ namespace EFCoreTry.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PID")
+                    b.Property<int>("Phone")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("SupplierId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PetName")
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Phone")
+                    b.Property<DateTime>("Birthday")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Birthplace")
@@ -178,11 +233,11 @@ namespace EFCoreTry.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Employee", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("TEXT");
@@ -193,24 +248,27 @@ namespace EFCoreTry.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FullName")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Product", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -233,7 +291,29 @@ namespace EFCoreTry.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Tag", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("CityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Supplier");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,46 +325,6 @@ namespace EFCoreTry.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Tag");
-                });
-
-            modelBuilder.Entity("EFCoreTry.Vet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Birthplace")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("TEXT");
 
@@ -292,25 +332,42 @@ namespace EFCoreTry.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Characters");
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Item", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Vet", b =>
                 {
-                    b.HasBaseType("EFCoreTry.Product");
+                    b.HasBaseType("EFCoreTry.Models.Employee");
 
-                    b.Property<int>("DurationInMinutes")
+                    b.Property<string>("CertID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("TEXT");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasDiscriminator().HasValue("Vet");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Item", b =>
+                {
+                    b.HasBaseType("EFCoreTry.Models.Product");
+
+                    b.Property<int>("Stocks")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("WorldwideBoxOfficeGross")
-                        .HasColumnType("REAL");
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("TEXT");
+
+                    b.HasIndex("SupplierId");
 
                     b.HasDiscriminator().HasValue("Item");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Service", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Service", b =>
                 {
-                    b.HasBaseType("EFCoreTry.Product");
+                    b.HasBaseType("EFCoreTry.Models.Product");
 
                     b.HasDiscriminator().HasValue("Service");
                 });
@@ -341,11 +398,11 @@ namespace EFCoreTry.Migrations
 
             modelBuilder.Entity("EFCoreTry.Models.Appointment", b =>
                 {
-                    b.HasOne("EFCoreTry.Customer", "Customer")
+                    b.HasOne("EFCoreTry.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("EFCoreTry.Vet", "Vet")
+                    b.HasOne("EFCoreTry.Models.Vet", "Vet")
                         .WithMany()
                         .HasForeignKey("VetId");
 
@@ -384,32 +441,72 @@ namespace EFCoreTry.Migrations
 
             modelBuilder.Entity("EFCoreTry.Models.Customer", b =>
                 {
-                    b.HasOne("EFCoreTry.Product", null)
+                    b.HasOne("EFCoreTry.Models.Product", null)
                         .WithMany("Customer")
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Tag", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Supplier", b =>
                 {
-                    b.HasOne("EFCoreTry.Product", null)
+                    b.HasOne("EFCoreTry.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Tag", b =>
+                {
+                    b.HasOne("EFCoreTry.Models.Product", null)
                         .WithMany("Tags")
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Vet", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Vet", b =>
                 {
-                    b.HasOne("EFCoreTry.Product", null)
+                    b.HasOne("EFCoreTry.Models.Product", null)
                         .WithMany("Vets")
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("EFCoreTry.Product", b =>
+            modelBuilder.Entity("EFCoreTry.Models.Item", b =>
+                {
+                    b.HasOne("EFCoreTry.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Animal", b =>
+                {
+                    b.Navigation("Breed");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Customer", b =>
+                {
+                    b.Navigation("Contact");
+
+                    b.Navigation("Pets");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Employee", b =>
+                {
+                    b.Navigation("Contact");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Product", b =>
                 {
                     b.Navigation("Customer");
 
                     b.Navigation("Tags");
 
                     b.Navigation("Vets");
+                });
+
+            modelBuilder.Entity("EFCoreTry.Models.Supplier", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }
