@@ -6,13 +6,9 @@ namespace EFCoreTry.Models
 {
     public class Appointment
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public Guid Id { get; set; }
-        public int CustomerId { get; set; }
         public Customer Customer { get; set; }
         public Vet Vet { get; set; }
-        public int VetId { get; set; }
         public string Date { get; set; }
         public string Description { get; set; }
     }

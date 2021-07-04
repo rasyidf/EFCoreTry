@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EFCoreTry.Models
 {
 
-    class Supplier
+    public class Supplier
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
