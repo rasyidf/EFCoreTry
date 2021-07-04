@@ -11,7 +11,7 @@ namespace EFCoreTry.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<Breed> Breed { get; set; }
-        public string DateBorn { get; set; }
+        public DateTime DateBorn { get; set; }
         public Gender Gender { get; set; }
         public bool Registered { get; set; }
         public string Color { get; set; }

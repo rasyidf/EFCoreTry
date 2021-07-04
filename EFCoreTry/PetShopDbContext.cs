@@ -16,7 +16,7 @@ namespace EFCoreTry
         public DbSet<Service> Services { get; set; }
         public DbSet<Appointment> Appoinment { get; set; }
         public DbSet<Customer> Customer { get; set; }
-        public DbSet<Vet> Characters { get; set; }
+        public DbSet<Vet> Vets { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
